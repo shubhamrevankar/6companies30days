@@ -1,23 +1,24 @@
+// 216. Combination Sum III
 class Solution {
 public:
-    string getHint(string secret, string guess) {
-        int bulls=0,cows=0;
-        int count[10] = {0};
-        int n=secret.length();
-        for(int i=0;i<n;i++) {
-            if(guess[i]!=secret[i])
-            count[secret[i]-'0']++;
+
+    void fun(int i,int target,vector<vector<int>> &res,vector<int> &temp,int n,int k){
+        if(target<0 || temp.size()>k) return;
+        if(target==0 && temp.size()==k){
+            res.push_back(temp);
+            return;
         }
-        for(int i=0;i<n;i++){
-            if(guess[i]==secret[i]){
-                bulls++;
-            }
-            else if(count[guess[i]-'0']>0){
-                cows++;
-                count[guess[i]-'0']--;
-            }
+        for(int j=i;j<n;j++){
+            temp.push_back(j+1);
+            fun(j+1,target-(j+1),res,temp,n,k);
+            temp.pop_back();
         }
-        string res = to_string(bulls)+"A"+to_string(cows)+"B";
+    }
+    vector<vector<int>> combinationSum3(int k, int n) {
+        
+        vector<vector<int>> res;
+        vector<int> temp;
+        fun(0,n,res,temp,9,k);
         return res;
     }
 };
